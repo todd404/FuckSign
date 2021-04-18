@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using IniParser;
-using IniParser.Model;
+
 
 namespace FuckSign
 {
@@ -18,29 +17,17 @@ namespace FuckSign
             if (!File.Exists(iniPath))
             {
                 File.Create(iniPath).Close();
-                
-                var parser = new FileIniDataParser();
-                IniData data = new IniData();
 
-                data.Sections.AddSection("common");
-                data["common"].AddKey("server_addr", "www.7066.site");
-                data["common"].AddKey("server_port", "7000");
+                IniFunc.writeString("common", "server_addr", "frp.7066.site", iniPath);
+                IniFunc.writeString("common", "server_port", "7000", iniPath);
 
-                data.Sections.AddSection("proxy");
-                data["proxy"].AddKey("type", "tcp");
-                data["proxy"].AddKey("local_ip", "127.0.0.1");
-                data["proxy"].AddKey("local_port", "1203");
-
-                parser.WriteFile(iniPath, data);
+                IniFunc.writeString("proxy", "type", "tcp", iniPath);
+                IniFunc.writeString("proxy", "local_ip", "127.0.0.1", iniPath);
+                IniFunc.writeString("proxy", "local_port", "1203", iniPath);
+                IniFunc.writeString("proxy", "remote_port", "6000", iniPath);
             }
         }
 
-        public void setRemotePort(int port)
-        {
-            var parser = new FileIniDataParser();
-            IniData data = parser.ReadFile(iniPath);
-
-            data["proxy"]["remote_port"] = port.ToString();
-        }
+        
     }
 }
